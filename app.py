@@ -27,7 +27,7 @@ try:
     /* MAIN BACKGROUND FIX */
     .stApp {{
         background: url("data:image/jpg;base64,{img}") no-repeat center center fixed;
-        background-size: cover;
+        background-size: 92% auto; /* Slightly zoomed out from original cover size */
     }}
 
     /* REMOVE STREAMLIT DARK/WHITE LAYERS */
@@ -56,6 +56,8 @@ try:
         right: 0;
         bottom: 0;
         background: rgba(0,0,0,0.25);
+        backdrop-filter: blur(6px); /* Blurs the background image */
+        -webkit-backdrop-filter: blur(6px);
         z-index: -1;
     }}
 
