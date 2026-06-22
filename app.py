@@ -229,6 +229,15 @@ def train_page():
     target = st.selectbox("Select Target Column", df.columns)
 
     if st.button("Train Model"):
+        # SAFETY FIX (only added lines)
+        df = df.copy()
+
+        # Convert everything to numeric (this is the fix)
+        df = df.apply(pd.to_numeric, errors='coerce')
+
+        # Drop any rows that became NaN after conversion
+        df = df.dropna()
+
         X = df.drop(target, axis=1)
         y = df[target]
 
