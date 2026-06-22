@@ -113,6 +113,7 @@ CREATE TABLE IF NOT EXISTS users(
 """)
 conn.commit()
 
+
 # ---------------- SESSION ----------------
 defaults = {
     "logged_in": False,
