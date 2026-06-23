@@ -193,28 +193,41 @@ def upload_page():
 def clean_page():
     st.title(" Data Cleaning")
 
-    df = st.session_state.df
-
-    if df is None:
+    if st.session_state.df is None:
         st.warning("Upload dataset first")
         return
 
+    # Show current data BEFORE cleaning
+    st.subheader("Before Cleaning")
+    st.write(st.session_state.df.head())
+
     if st.button("Clean Data"):
+        df = st.session_state.df.copy()
+
         df = df.drop_duplicates().dropna()
+
+        from sklearn.preprocessing import LabelEncoder
 
         for col in df.columns:
             if df[col].dtype == "object":
+                df[col] = df[col].astype(str).str.strip()
                 df[col] = LabelEncoder().fit_transform(df[col])
 
+        df = df.apply(pd.to_numeric, errors='coerce').fillna(0)
+
+        # ✅ UPDATE SESSION STATE
         st.session_state.df = df
+
         st.success("Data Cleaned ✅")
 
-    st.write(df.head())
+    # Show updated data AFTER cleaning
+    st.subheader("After Cleaning")
+    st.write(st.session_state.df.head())
 
-    
     if st.button("Next ➡️"):
         st.session_state.page = "train"
         st.rerun()
+
     if st.button("⬅️ Back"):
         st.session_state.page = "upload"
         st.rerun()
